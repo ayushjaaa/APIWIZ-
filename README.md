@@ -1,16 +1,82 @@
-# React + Vite
+# 🌳 JSON Tree Visualizer (React + React Flow)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 📅 Submission Date: 30/10/2025  
+**Author:** Ayush Jaiswal  
+**Project Title:** JSON Tree Visualizer  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📝 Project Overview
 
-## React Compiler
+This project is a **JSON Tree Visualizer** built using **React** and **React Flow**.  
+It allows users to input JSON data, validate it, and visualize the structure as a connected node tree with color-coded node types.  
+The application also includes search functionality, responsive design, and dark/light theme support.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✅ Functionalities Implemented
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. 🧩 JSON Input & Validation
+- Added a **text area** for users to paste or type JSON data.  
+- Implemented **JSON validation** — displays error messages for invalid input.  
+- Included a **sample JSON placeholder** for quick testing.  
+- Displays a clear message if the JSON format is incorrect.
+
+---
+
+### 2. 🌿 Tree Visualization using React Flow
+- Built the **entire visualization using React Flow library** (no other graph library used).  
+- Displays **JSON objects, arrays, and primitive values** as hierarchical tree nodes.  
+- Parent-child relationships are shown with connecting **edges/lines**.  
+- Smooth **zoom, pan, and fit view** controls implemented for navigation.  
+- On hover, shows **node information** such as path and value.
+
+---
+
+### 3. 🔍 Search Functionality
+- Implemented a **search bar** that accepts **JSON path syntax** (e.g., `$.user.name`, `items[0].id`).  
+- If a match is found:
+  - The corresponding node is **highlighted**.  
+  - The view **automatically pans and centers** to the matched node.  
+- If no match is found, a **“No match found”** message is displayed.  
+
+---
+
+### 4. 🎨 Color Functionality
+- Each node type has its **own color scheme**:
+  - **Objects:** Blue/Purple  
+  - **Arrays:** Green  
+  - **Primitives:** Orange/Yellow  
+- Highlighted nodes use a **distinct glowing border** for clarity.  
+- Color styles are dynamically applied using React Flow’s node style props.
+
+---
+
+### 5. 🌗 Responsive Dark/Light Mode
+- Added **dark and light theme support** throughout the app.  
+- The selected theme is **saved in `localStorage`**, so it remembers user preference.  
+- Layout is **fully responsive** and works seamlessly on desktop, tablet, and mobile screens.  
+
+---
+
+## 🛠️ Tech Stack Used
+- **Frontend:** React 18  
+- **Visualization:** React Flow  
+- **Styling:** Tailwind CSS / CSS Variables  
+- **Language:** JavaScript (ES6+)  
+
+---
+
+## ⚙️ How to Run Locally
+
+```bash
+
+git clone [your-repo-link]
+
+
+cd json-tree-visualizer
+
+npm install
+
+
+npm run dev
