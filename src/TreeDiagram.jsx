@@ -165,6 +165,12 @@ export default function TreeDiagram({ json, setJsonhandler }) {
             </button>{" "}
             — search
           </div>
+          <div>
+            <button className="bg-[#ff0000] w-30 p-2 text-white rounded">
+              Number
+            </button>{" "}
+            — Number
+          </div>
         </div>
 
   
