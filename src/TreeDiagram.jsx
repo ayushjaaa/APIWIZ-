@@ -1,19 +1,55 @@
 import { useMemo, useState } from "react";
-import ReactFlow, { Background, Controls, ReactFlowProvider, useReactFlow } from "reactflow";
+import ReactFlow, {
+  Background,
+  Controls,
+  ReactFlowProvider,
+  useReactFlow,
+} from "reactflow";
 import { generateTreeData, TREE_CONFIG } from "./utils";
 import "reactflow/dist/style.css";
 
 export const TreeDiagramProvider = ReactFlowProvider;
 
-export default function TreeDiagram({ json }) {
+export default function TreeDiagram({ json, setJsonhandler }) {
   const { fitView } = useReactFlow();
   const [search, setSearch] = useState("");
   const [theme, setTheme] = useState("light");
 
+
+  const [textarea, setTextarea] = useState("");
+  const [error, setError] = useState("");
+
+
+  const handleTextareaChange = (e) => {
+    const value = e.target.value;
+    setTextarea(value);
+
+    try {
+      JSON.parse(value);
+      setError(""); 
+    } catch (err) {
+      setError("⚠️ Invalid JSON format — please check your syntax");
+    }
+  };
+
+
+  const handleSubmit = () => {
+    try {
+      const parsed = JSON.parse(textarea);
+      setError("");
+      setJsonhandler(parsed);
+    } catch (err) {
+      setError("⚠️ Invalid JSON — cannot generate tree");
+    }
+  };
+
+
   const { nodes, edges } = useMemo(() => {
     const { nodes, edges } = generateTreeData({ json });
 
-    const matchingNodeIndex = nodes.findIndex((node) => node.data.path === search);
+    const matchingNodeIndex = nodes.findIndex(
+      (node) => node.data.path === search
+    );
 
     if (matchingNodeIndex !== -1) {
       nodes[matchingNodeIndex].style = {
@@ -51,8 +87,9 @@ export default function TreeDiagram({ json }) {
   const current = themeClasses[theme];
 
   return (
-    <div className={`flex flex-col w-full h-screen p-4 gap-4 ${current.bg} ${current.text}`}>
-   
+    <div
+      className={`flex flex-col w-full h-screen p-4 gap-4 ${current.bg} ${current.text}`}
+    >
       <header className="flex flex-col sm:flex-row justify-between items-center w-full mb-4">
         <h1 className="text-2xl sm:text-4xl font-bold">JSON Tree Visualizer</h1>
         <button
@@ -64,12 +101,14 @@ export default function TreeDiagram({ json }) {
       </header>
 
       <div className="flex flex-col lg:flex-row w-full h-full gap-4">
-      
+ 
         <div className="flex flex-col w-full lg:w-1/2 gap-4">
           <label htmlFor="json" className="text-sm lg:text-lg font-medium">
             JSON Input
           </label>
+
           <textarea
+            onChange={handleTextareaChange}
             id="json"
             rows={12}
             placeholder={`{
@@ -80,17 +119,56 @@ export default function TreeDiagram({ json }) {
   }
 }`}
             className={`w-full h-72 sm:h-96 p-4 text-sm lg:text-base font-mono rounded-xl shadow-sm outline-none resize-none
-              ${current.inputBg} ${current.text} border ${current.border} ${current.placeholder}
+              ${current.inputBg} ${current.text} border ${
+              error ? "border-red-500" : current.border
+            } ${current.placeholder}
               focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition`}
           />
-          <button className={`self-start px-4 py-2 rounded-lg font-semibold ${current.button} transition`}>
+
+
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
+          <button
+            onClick={handleSubmit}
+            disabled={!!error || !textarea.trim()} 
+            className={`self-start px-4 py-2 rounded-lg font-semibold transition ${
+              error || !textarea.trim()
+                ? "bg-gray-400 cursor-not-allowed text-white"
+                : current.button
+            }`}
+          >
             Generate Tree
           </button>
+
+          <h1 className="font-semibold mt-4">Node Colors:</h1>
+          <div>
+            <button className="bg-[#0000FF] w-30 p-2 text-white rounded">
+              Object NODE
+            </button>{" "}
+            — object
+          </div>
+          <div>
+            <button className="bg-[#0000FF] w-30 p-2 text-white rounded">
+              Array NODE
+            </button>{" "}
+            — Array
+          </div>
+          <div>
+            <button className="bg-[#FDA406] w-30 p-2 text-white rounded">
+              Primitive NODE
+            </button>{" "}
+            — Primitive
+          </div>
+          <div>
+            <button className="bg-[#800080] w-30 p-2 text-white rounded">
+              Search
+            </button>{" "}
+            — search
+          </div>
         </div>
 
-
+  
         <div className="flex flex-col w-full lg:w-1/2 gap-4 h-full">
-   
           <div className="flex gap-2 w-full">
             <input
               type="text"
@@ -101,13 +179,16 @@ export default function TreeDiagram({ json }) {
                 ${current.inputBg} ${current.text} border ${current.border} ${current.placeholder}
                 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition`}
             />
-            <button className={`px-4 py-2 rounded-lg text-sm lg:text-base ${current.button} transition`}>
+            <button
+              className={`px-4 py-2 rounded-lg text-sm lg:text-base ${current.button} transition`}
+            >
               Search
             </button>
           </div>
 
-         
-          <div className={`flex-1 w-full rounded-xl overflow-hidden border ${current.border} ${current.reactFlowBg}`}>
+          <div
+            className={`flex-1 w-full rounded-xl overflow-hidden border ${current.border} ${current.reactFlowBg}`}
+          >
             <ReactFlow nodes={nodes} edges={edges} fitView>
               <Controls />
               <Background />

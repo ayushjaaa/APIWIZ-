@@ -10,19 +10,19 @@ export const TREE_CONFIG = {
     color: "black",
   },
   object: {
-    backgroundColor: "red",
+    backgroundColor: "blue",
     color: "black",
   },
   string: {
-    backgroundColor: "pink",
+    backgroundColor: "orange",
     color: "black",
   },
   number: {
-    backgroundColor: "green",
+    backgroundColor: "red",
     color: "black",
   },
   array: {
-    backgroundColor: "blue",
+    backgroundColor: "white",
     color: "white",
   },
 };
@@ -44,6 +44,7 @@ export function generateTreeData({ json }) {
     const nodeId = customKey || `${parentId}-${key}`;
 
     const nodeDataType = typeof value;
+    console.log(nodeDataType)
     const style = {
       ...TREE_CONFIG.default,
       ...(TREE_CONFIG[nodeDataType] || {}),
